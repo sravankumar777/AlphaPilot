@@ -4,7 +4,17 @@ Main entry point for AlphaPilot
 
 from alphapilot.database.connection import get_database_connection
 from alphapilot.database.schema import create_transactions_table
-from alphapilot.portfolio.transaction import add_transaction
+from alphapilot.database.transaction_repository import (
+    get_all_transactions,
+    get_portfolio_summary,
+)
+from alphapilot.portfolio.transaction import (
+    add_transaction,
+    display_transactions,
+    search_transaction,
+    display_portfolio_summary,
+)
+from alphapilot.menu import display_menu
 
 def main():
     """
@@ -19,7 +29,24 @@ def main():
 
     create_transactions_table()
 
-    add_transaction()
+    while True:
+        choice = display_menu()
+
+        if choice == "1":
+            add_transaction()
+        elif choice == "2":
+            transactions = get_all_transactions()
+            display_transactions(transactions)
+        elif choice == "3":
+            search_transaction()
+        elif choice == "4":
+            summary = get_portfolio_summary()
+            display_portfolio_summary(summary)
+        elif choice == "5":
+            print("Thank you for using AlphaPilot")
+            break
+        else:
+            print("❌ Invalid Option Selected")
 
     print("👋 Database connection closed.")
 

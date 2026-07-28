@@ -3,7 +3,10 @@ Transaction module for AlphaPilot, which does addition or deletion of transactio
 """
 
 from datetime import date
-from alphapilot.database.transaction_repository import save_transaction
+from alphapilot.database.transaction_repository import (
+    save_transaction,
+    get_transactions_by_symbol,
+)
 
 def add_transaction():
     """
@@ -66,3 +69,91 @@ def add_transaction():
     )
 
     print("\n Transaction captured successfully!!!")
+
+def display_transactions(transactions):
+    """
+    Display transactions in a formatted table.
+    """
+    print("\n" + "=" * 70)
+    print("                    TRANSACTION HISTORY")
+    print("=" * 70)
+
+    print(
+        f"{'ID':<4}"
+        f"{'DATE':<12}"
+        f"{'SYMBOL':<15}"
+        f"{'ACTION':<8}"
+        f"{'QUANTITY':<10}"
+        f"{'PRICE':<12}"
+        f"{'INVESTMENT':>12}"
+    )
+    print("-" * 70)
+
+    # print(type(transactions[0]))
+    for transaction in transactions:
+        transaction_id = transaction["id"]
+        transaction_date = transaction["transaction_date"]
+        symbol = transaction["symbol"]
+        action = transaction["action"]
+        quantity = transaction["quantity"]
+        price = transaction["price"]
+        brokerage = transaction["brokerage"]
+        remarks = transaction["remarks"]
+        investment = quantity * price
+
+        print(
+            f"{transaction_id:<4}"
+            f"{transaction_date:<12}"
+            f"{symbol:<15}"
+            f"{action:<8}"
+            f"{quantity:<10}"
+            f"₹{price:<12,.2f}"
+            f"₹{investment:>12,.2f}"
+        )
+
+    print("-" * 70)
+    print(f"Total Transactions: {len(transactions)}")
+
+def search_transaction():
+    symbol = input("Enter Stock Symbol: ").strip().upper()
+
+    transactions = get_transactions_by_symbol(symbol)
+
+    if len(transactions) == 0:
+        print(f"\n ❌ No transactions found for '{symbol}'.")
+        return
+
+    display_transactions(transactions)
+
+def display_portfolio_summary(summary):
+    """
+    Display the portfolio summary.
+    """
+    print(">>>> display_portfolio_summary() called <<<<")
+    print("\n" + "=" * 70)
+    print(" " * 22 + "PORTFOLIO SUMMARY")
+    print("=" * 70)
+
+    print(
+        f"{'SYMBOL':<15}"
+        f"{'HOLDING':<10}"
+        f"{'INVESTMENT':>15}"
+    )
+
+    for row in summary:
+        symbol = row["symbol"]
+        holding = row["holding"]
+        investment = row["investment"]
+        print(
+            f"{symbol:<15}"
+            f"{holding:<10}"
+            f"{investment:>14,.2f}"
+        )
+        # print(row["symbol"])
+        # print(row["holding"])
+        # print(row["investment"])
+        # print("-" * 20)
+
+    print("-" * 70)
+    print(f"Total Stocks : {len(summary)}")
+    
