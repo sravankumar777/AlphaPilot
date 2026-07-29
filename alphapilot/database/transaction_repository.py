@@ -73,32 +73,35 @@ def get_all_transactions():
         print(f"❌ Error retrieving transactions: {error}")
         return []
 
-def get_transactions_by_symbol(symbol):
+def get_transactions_by_symbol(symbol, newest_first=True):
     """
     Retrieve all transactions for a given stock symbol.
+
+    newest_first=True --> Search screen
+    newest_first=False --> Portfolio Engine
     """
 
     connection = get_database_connection()
+    order_by = "DESC" if newest_first else "ASC"
 
     try:
         cursor = connection.cursor()
-        cursor.execute(
-            """
-            SELECT * 
-            FROM transactions 
+        query = f"""
+            SELECT *
+            FROM transactions
             WHERE symbol = ?
-            ORDER BY transaction_date DESC, id DESC
-            """,
-            (symbol,)
-        )
+            ORDER BY transaction_date {order_by}, id {order_by}
+        """
+        cursor.execute(query, (symbol,))
 
         transactions = cursor.fetchall()
-        connection.close()
 
         return transactions
     except Exception as error:
         print(f"❌ Error retrieving transactions: {error}")
         return []
+    finally:
+        connection.close()
 
 def get_portfolio_summary():
     """

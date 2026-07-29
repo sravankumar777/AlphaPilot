@@ -14,6 +14,7 @@ from alphapilot.portfolio.transaction import (
     search_transaction,
     display_portfolio_summary,
 )
+from alphapilot.portfolio.portfolio_engine import calculate_portfolio
 from alphapilot.menu import display_menu
 
 def main():
@@ -40,8 +41,10 @@ def main():
         elif choice == "3":
             search_transaction()
         elif choice == "4":
-            summary = get_portfolio_summary()
-            display_portfolio_summary(summary)
+            # summary = get_portfolio_summary()
+            # display_portfolio_summary(summary)
+            symbol = input("Enter a symbol: ").strip().upper()
+            calculate_portfolio(symbol)
         elif choice == "5":
             print("Thank you for using AlphaPilot")
             break
