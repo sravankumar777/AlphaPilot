@@ -15,6 +15,7 @@ from alphapilot.portfolio.transaction import (
     display_portfolio_summary,
 )
 from alphapilot.portfolio.portfolio_engine import calculate_portfolio
+from alphapilot.portfolio.valuation_engine import calculate_portfolio_valuation
 from alphapilot.menu import display_menu
 
 def main():

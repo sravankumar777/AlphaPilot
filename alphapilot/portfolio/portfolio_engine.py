@@ -18,7 +18,8 @@ def calculate_portfolio(symbol):
     totat_sell_quantity = 0
     average_cost = 0.0
     investment_value = 0.0
-    
+
+    symbol = symbol.strip().upper()
     transactions = get_transactions_by_symbol(symbol, newest_first=False)
 
     # print("\n" + "=" * 60)
