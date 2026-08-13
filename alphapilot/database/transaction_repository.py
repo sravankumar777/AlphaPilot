@@ -103,6 +103,29 @@ def get_transactions_by_symbol(symbol, newest_first=True):
     finally:
         connection.close()
 
+def get_all_symbols():
+    """
+    Retrieve all unique stock symbols from transactions.
+    """
+    connection = get_database_connection()
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            SELECT DISTINCT symbol
+            FROM transactions
+            ORDER BY symbol
+            """
+        )
+        symbols = cursor.fetchall()
+        return [row["symbol"] for row in symbols]
+    except Exception as error:
+        print(f"❌ Error retreiving symbols: {error}")
+        return []
+    finally:
+        connection.close()
+
 def get_portfolio_summary():
     """
     Retrieve the portfolio summary grouped by stock symbol.
