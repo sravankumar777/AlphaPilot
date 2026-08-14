@@ -49,6 +49,13 @@ def calculate_market_values():
         portfolio['market_value'] = (
             portfolio['holding'] * current_price
         )
+        portfolio["investment_value"] = (
+            portfolio["holding"] * portfolio["average_cost"]
+        )
+        portfolio["unrealized_profit"] = (
+            portfolio["market_value"] 
+            - portfolio["investment_value"]
+        )
 
     return portfolios
 
